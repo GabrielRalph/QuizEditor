@@ -1,15 +1,15 @@
-import { getSummary } from "../Firebase/quizes.js";
+import { getSummary } from "../Firebase/quizzes.js";
 import { SvgPlus } from "../SvgPlus/4.js";
 import { Icon, isIconName } from "../Utilities/icons.js";
 import { PromiseChain } from "../Utilities/shared.js";
 import { MarkdownElement } from "./markdown.js";
 /**
- * @typedef {import("../Firebase/quizes.js").Answer} Answer
- * @typedef {import("../Firebase/quizes.js").Question} Question
- * @typedef {import("../Firebase/quizes.js").Quiz} Quiz
- * @typedef {import("../Firebase/quizes.js").Action} Action
- * @typedef {import("../Firebase/quizes.js").QuizResults} QuizResults
- * @typedef {import("../Firebase/quizes.js").AnswerResponse} AnswerResponse
+ * @typedef {import("../Firebase/quizzes.js").Answer} Answer
+ * @typedef {import("../Firebase/quizzes.js").Question} Question
+ * @typedef {import("../Firebase/quizzes.js").Quiz} Quiz
+ * @typedef {import("../Firebase/quizzes.js").Action} Action
+ * @typedef {import("../Firebase/quizzes.js").QuizResults} QuizResults
+ * @typedef {import("../Firebase/quizzes.js").AnswerResponse} AnswerResponse
  */
 
 

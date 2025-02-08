@@ -2,7 +2,7 @@ import {SvgPlus} from "./SvgPlus/4.js"
 import {WBInputs} from "./Utilities/shared.js";
 import {QuizEditor} from "./QuizEditor/quiz-editor.js";
 import {QuizView} from "./QuizEditor/quiz.js";
-import {getEmptyAnswer, getEmptyQuestion, getEmptyQuiz} from "./Firebase/quizes.js";
+import {getEmptyAnswer, getEmptyQuestion, getEmptyQuiz} from "./Firebase/quizzes.js";
 import { QuizResultsPage } from "./QuizEditor/quiz-results.js";
 import { initialise } from "./Firebase/firebase-client.js";
 
