@@ -264,7 +264,7 @@ export async function getSummary(csv) {
     let data = {quizResultsCSV: csv};
     console.log(data);
     
-    let res = await callFunction("quizes-summarise", data);
+    let res = await callFunction("quizzes-summarise", data);
     return res;
 }
 
@@ -275,7 +275,7 @@ export async function getSummary(csv) {
 export async function saveQuiz(qid, quiz) {
     quiz = validateQuiz(quiz);
 
-    let {data} = await callFunction("quizes-add", {qid, quiz})
+    let {data} = await callFunction("quizzes-add", {qid, quiz})
     if (data.errors.length > 0) {
         console.log("An error occured whilst saving quiz.", data.errors);
     }
