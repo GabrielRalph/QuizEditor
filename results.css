@@ -1,0 +1,63 @@
+body {
+    margin: 5em;
+}
+@media print {
+    body {margin: 0;}
+}
+.results {
+    column-count: 2;
+    /* position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+}
+.results > .section:first-of-type h2 {
+    margin-top: 0;
+}
+.section.break-okay {
+    break-inside: unset;
+}
+.section {
+    break-inside: avoid-column;
+}
+li[correct]::after {
+    content: " ";
+    width: 0.7em;
+    height: 0.7em;
+    background: greenyellow;
+    border-radius: 1em;
+    display: inline-block;
+    margin-left: 0.5em;
+}
+
+ol, h4 {
+    margin: 0;
+}
+.q-title {
+    margin-top: 0.5em;
+    display: flex;
+    gap: 0.5em;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+td, th {
+    border: 2px solid rgb(46, 46, 46);
+    padding: 0.5em;
+}
+table {
+    border-collapse: collapse;
+    margin: auto;
+}
+
+
+.axis {
+    stroke: black;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
