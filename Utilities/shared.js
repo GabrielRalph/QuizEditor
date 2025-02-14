@@ -255,8 +255,10 @@ export class ImageSelect extends SvgPlus {
                     this.dispatchEvent(event);
                     if (event.queryPromise instanceof Promise) {
                         let url = await event.queryPromise;
-                        this.value = url;
-                        this.dispatchEvent(new Event("change"))
+                        if (typeof url === "string" && url.length > 0) {
+                            this.value = url;
+                            this.dispatchEvent(new Event("change"))
+                        }
                     }
                 }
             }

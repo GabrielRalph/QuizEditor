@@ -228,7 +228,6 @@ class QuizesList extends WBlock {
                     [["div", {class: "i",content: q.ownerName}]],
                 ]],
                 [["div", {class: "row-g"}], [
-                    [["div", {class: "indicator owned", on: q.owned}]],
                     [["div", {class: "indicator public", on: q.public}]],
                     [[Icon, {events: {
                         /** @param {Event} e */
@@ -320,15 +319,19 @@ export class QuizEditorPanel extends SvgPlus {
         this.dispatchEvent(event);
     }
 
+
     updatePath(path = this.path){
         this.setAttribute("path-depth", path.length)
         let keys = [["quiz", "question"], ["question", "answer"]];
+
+        // Deselect all ordered list inputs
+        keys.forEach(([k0, k1]) => this[k0+"Input"].inputs[k1+"s"].input.selected = null);
+
         let quiz = this.quiz;
         this["quizInput"].value = quiz;
         path.forEach((i, j) => {
                 try {
                     let [key0, key] = keys[j]
-                
                     this[key0+"Input"].inputs[key+"s"].input.selected = i;
                     quiz = quiz[key+'s'][i];
                     this[key+"Input"].value = quiz;
@@ -340,8 +343,6 @@ export class QuizEditorPanel extends SvgPlus {
     }
 
     setValueAtPath(path, value) {
-        console.log(path, value);
-        
         try {
             if (path == null || path.length == 0) {
                 this.quiz = value;
@@ -556,8 +557,7 @@ export class QuizEditorApp extends SvgPlus {
         switch (type) {
             case "answer": 
                 let answers = this.quizView.answerBoard.selected;
-                let i = answers.pop();
-                path = [qi, i]
+                path = answers.length > 0 ? [qi, answers.pop()] : [qi]
                 this.editor.path = path;
                 break;
             
