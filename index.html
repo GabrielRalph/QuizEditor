@@ -10,33 +10,8 @@
     <link rel="stylesheet" href="./quiz.css">
     <link rel="stylesheet" href="./results.css">
     <link rel="stylesheet" href="./inputs.css">
-    <script>
-        MathJax = {
-        loader: {load: ['[tex]/color', '[tex]/colortbl']},
-        tex: {
-          packages: {'[+]': ['color', 'colortbl']},
-          inlineMath: [['$$', '$$']],
-          displayMath: [],
-          macros: {
-            trans: `\\underset{heat}{\\overset{cool}{\\rightleftharpoons}}`,
-            mat: ["\\left[ \\begin{matrix} #1 \\end{matrix}\\right]", 1],
-            abs: ["\\left|  #1  \\right|", 1],
-            dpar: ["\\cfrac{\\partial #1}{\\partial #2}", 2],
-            hl: ["{\\color{WildStrawberry} #1}", 1],
-            red: ["{\\color{BrickRed} {#1}}", 1],
-            blue: ["{\\color{RoyalBlue} {#1}}", 1],
-            mod: ["\\ (\\text{mod } {#1})", 1],
-          },
-          tags: "ams",
-        },
-        svg: {
-          fontCache: 'global'
-        }
-      };
-        </script>
-    <script type="text/javascript" id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script>
+   
+    
 </head>
 <body>
     <squidly-loader full></squidly-loader>
@@ -53,6 +28,9 @@
 </style>
 
 <script type = "module">
-    import {} from "./QuizEditor/quiz-editor.js"
+    import {SvgPlus} from "./SvgPlus/4.js"
+    import {QuizEditorApp} from "./QuizEditor/quiz-editor.js"
+    SvgPlus.defineHTMLElement(QuizEditorApp)  
+
 </script>
 </html>

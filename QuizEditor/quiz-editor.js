@@ -17,6 +17,7 @@ import { Icon } from "../Utilities/icons.js";
  * @typedef {import("../SvgPlus/4.js").SvgPlusClass} SvgPlusClass
  */
 
+
 const COLORS = [
     "light-red",
     "light-orange",
@@ -91,7 +92,7 @@ const LAYOUTS = {
             name: "Answers",
             type: "orderedList",
             defaultValue: [],
-            maxItems: 9,
+            maxItems: 10,
             minItems: 2,
             generator: (value) => getEmptyAnswer(value.length),
             serialiser: (o) => 
@@ -423,6 +424,13 @@ export class QuizEditorApp extends SvgPlus {
     constructor(el = "quiz-editor-app"){
         super(el);
 
+        const resize = new ResizeObserver(() => {
+            this.styles = {
+                "--vh": (this.clientHeight/100)+ "px",
+                "--vw": (this.clientWidth/100) + "px",
+            }
+        })
+        resize.observe(this);
         // this.setAttribute("edit", true)
         this.quizList = this.createChild("div", {class: "quizes-list"})
             .createChild(QuizesList, { events: {
@@ -512,7 +520,6 @@ export class QuizEditorApp extends SvgPlus {
             }
             e.queryPromise = getURL();
         });
-        this.initialise();
     }
 
     async editMode(bool) {
@@ -523,10 +530,20 @@ export class QuizEditorApp extends SvgPlus {
         this.disabled = false;
     }
 
-    async initialise(){
-        await initialise();
-        this.selectQuiz(getAllQuizes()[0].qid);
+    async onconnect(){
+        await this.initialise();
         document.querySelector("squidly-loader").hide(0.3);
+
+    }
+
+    async initialise(){
+        await initialise((user) => {
+            if (user) {
+                this.selectQuiz(getAllQuizes()[0].qid);
+            } else {
+                this.selectQuiz(null);
+            }
+        });
     }
 
     set disabled(bool) {
@@ -646,5 +663,3 @@ export class QuizEditorApp extends SvgPlus {
         return this.editor.value;
     }
 }
-
-SvgPlus.defineHTMLElement(QuizEditorApp)

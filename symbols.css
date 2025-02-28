@@ -17,7 +17,7 @@
 
 
 .search-widget {
-    --widget-size: 10em;
+    --widget-size: min(10em, 18vmin);
     --gap: 0.5em;
     --w-x: 4;
     --w-y: 3;

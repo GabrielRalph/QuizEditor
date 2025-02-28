@@ -50,7 +50,7 @@
  * @property {string} summary
  */
 
-import { query, get, set, onChildAdded, onChildChanged, onChildRemoved, callFunction, child, ref, update, initialise as initFB, orderByChild, equalTo, getUID } from "./firebase-client.js"
+import { query, get, set, onChildAdded, onChildChanged, onChildRemoved, callFunction, child, ref, update, initialise as initFB, orderByChild, equalTo, getUID, addAuthChangeListener, signOut, signInWithEmailAndPassword } from "./firebase-client.js"
 
 
 const MAX_TITLE_LENGTH = 1024;
@@ -264,7 +264,7 @@ export async function getSummary(csv) {
     let data = {quizResultsCSV: csv};
     console.log(data);
     
-    let res = await callFunction("quizzes-summarise", data);
+    let res = await callFunction("quizzes-summarise", data, "australia-southeast1");
     return res;
 }
 
@@ -273,14 +273,18 @@ export async function getSummary(csv) {
  * @param {Quiz} quiz
  */
 export async function saveQuiz(qid, quiz) {
-    quiz = validateQuiz(quiz);
-
-    let {data} = await callFunction("quizzes-add", {qid, quiz})
-    if (data.errors.length > 0) {
-        console.log("An error occured whilst saving quiz.", data.errors);
+    let quizID = qid;
+    try {
+        quiz = validateQuiz(quiz);
+        let {data} = await callFunction("quizzes-add", {qid, quiz}, "australia-southeast1")
+        if (data.errors.length > 0) {
+            console.log("An error occured whilst saving quiz.", data.errors);
+        }
+        quizID = data.quizID;
+        
+    } catch (e) {
     }
-    
-    return data.quizID;
+    return quizID;
 }
 
 /** Deletes a quiz from firebase
@@ -334,45 +338,62 @@ export function addQuizUpdateListener(callback){
 /**
  * Initialises firebase and begins listening to updates 
  */
-export async function initialise() {
-    let userData = await initFB();
-    
-    if (userData == null) throw "No user present."
-	
-    let publicQuery = query(quizesRef(), orderByChild('public'), equalTo(true));
-	let ownedQuery = query(quizesRef(), orderByChild('owner'), equalTo(getUID()));
-
-    let proms = [["public", publicQuery], ["owned", ownedQuery]].map(async ([type, query]) => {
-        let allQuizes = (await get(query)).val();
-        for (let QID in allQuizes) QUIZES[QID] = allQuizes[QID];
-
-        DATABASE_WATCHERS.push(onChildAdded(query, (snapshot) => {
-			let QID = snapshot.key;
-            let alreadyAdded = QID in QUIZES
-            QUIZES[QID] = snapshot.val();
-            if (!alreadyAdded) {
-                console.log(type, "add", QID, snapshot.val().name);
-                callUpdates();
+let init = false;
+export async function initialise(callback) {
+    if (init instanceof Promise) return init;
+    init = new Promise((r) => {
+        addAuthChangeListener(async (user) => {
+            while (DATABASE_WATCHERS.length > 0) DATABASE_WATCHERS.pop()();
+            QUIZES = {};
+            if (user != null) {
+                let publicQuery = query(quizesRef(), orderByChild('public'), equalTo(true));
+                let ownedQuery = query(quizesRef(), orderByChild('owner'), equalTo(getUID()));
+            
+                let proms = [["public", publicQuery], ["owned", ownedQuery]].map(async ([type, query]) => {
+                    let allQuizes = (await get(query)).val();
+                    for (let QID in allQuizes) QUIZES[QID] = allQuizes[QID];
+            
+                    DATABASE_WATCHERS.push(onChildAdded(query, (snapshot) => {
+                        let QID = snapshot.key;
+                        let alreadyAdded = QID in QUIZES
+                        QUIZES[QID] = snapshot.val();
+                        if (!alreadyAdded) {
+                            console.log(type, "add", QID, snapshot.val().name);
+                            callUpdates();
+                        }
+                    }));
+            
+                    DATABASE_WATCHERS.push(onChildChanged(query, (snapshot) => {
+                        let QID = snapshot.key;
+                        QUIZES[QID] = snapshot.val();
+                        console.log(type, "change", QID, snapshot.val().name);
+                        callUpdates();
+                    }));
+            
+                    DATABASE_WATCHERS.push(onChildRemoved(query, (snapshot) => {
+                        let QID = snapshot.key;
+                        if (QID in QUIZES) {
+                            delete QUIZES[QID]
+                            console.log(type, "delete", QID, snapshot.val().name);
+                            callUpdates();
+                        }
+                    }));
+                });
+                await Promise.all(proms);
             }
-		}));
-
-		DATABASE_WATCHERS.push(onChildChanged(query, (snapshot) => {
-			let QID = snapshot.key;
-			QUIZES[QID] = snapshot.val();
-			console.log(type, "change", QID, snapshot.val().name);
-			callUpdates();
-		}));
-
-		DATABASE_WATCHERS.push(onChildRemoved(query, (snapshot) => {
-			let QID = snapshot.key;
-            if (QID in QUIZES) {
-                delete QUIZES[QID]
-                console.log(type, "delete", QID, snapshot.val().name);
-                callUpdates();
-            }
-		}));
-    });
-    await Promise.all(proms);
-    await callUpdates();
+            await callUpdates();
+            if (callback instanceof Function) await callback(user);
+            r();
+        })
+    }) 
+    initFB();
+    await init;
 }
 
+
+window.signOut = signOut
+window.signIn = () => {
+    let email = prompt("email");
+    let password = prompt("password");
+    signInWithEmailAndPassword(email, password);
+}

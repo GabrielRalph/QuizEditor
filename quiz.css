@@ -24,6 +24,10 @@ quiz-view {
     --button-text-color: black;
 }
 
+[aria-hidden="true"] {
+    display: none;
+}
+
 [colorf="light-blue"] {
     --button-color: var(--sky-blue);
     --button-text-color: black;
@@ -274,6 +278,7 @@ access-button[quiz-icon] img {
 
 access-button[quiz-icon] .icon {
     height: 20%;
+    max-width: 90%;
 }
 
 quiz-view > access-button[quiz-icon] {
