@@ -24,9 +24,9 @@ quiz-view {
     --button-text-color: black;
 }
 
-[aria-hidden="true"] {
+/* [aria-hidden="true"] {
     display: none;
-}
+} */
 
 [colorf="light-blue"] {
     --button-color: var(--sky-blue);

@@ -189,6 +189,8 @@ export class OrderedList extends SvgPlus {
             [...this.children].forEach((e,i)=>e.index=i);
         }
         this.toggleAttribute("no-delete", this.children.length === this.minItems);
+        this.addIcon.toggleAttribute("no-add", this.children.length === this.maxItems);
+
     }
 
     /**
