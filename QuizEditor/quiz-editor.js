@@ -149,7 +149,7 @@ class QuizesList extends WBlock {
         super();
         createChildren([
             [["div", {class: "row"}], [
-                [["div", {content: "Quizes"}]],
+                [["div", {content: "Quizzes"}]],
                 [[Icon, {events: {click: () => this.dispatchEvent(new Event("quiz-add"))}}, "add"]]
             ]],
             [["div", {class: "row search"}], [
@@ -158,7 +158,6 @@ class QuizesList extends WBlock {
                         this.filterQuizes(e.target.value)
                     }
                 }}]],
-                [[Icon, {}, "search"]]
             ]]
         ], this.head)
         
