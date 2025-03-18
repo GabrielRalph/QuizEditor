@@ -266,7 +266,7 @@ access-button[quiz-icon] {
 
 access-button[quiz-icon] .title {
     font-size: 1.5em;
-    font-weight: bold;
+    font-weight: 200;
 }
 .subtitle {
     margin: 0 0.2em;
