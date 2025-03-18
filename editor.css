@@ -72,12 +72,16 @@ quiz-editor-app {
 
 .quizes-list > w-block {
     margin: 0.5em;
+    max-height: calc(100% - 1em - 4px);
 }
 
 .quizes-list .head {
     font-size: 1.3em;
 }
-
+.quizes-list .main {
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
 
 
 .quiz-item {
