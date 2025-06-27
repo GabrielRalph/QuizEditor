@@ -112,6 +112,9 @@ export class Icon extends SvgPlus {
      * @param {IconName} name
      */
     set name(name){
+        if (name === this._name) return;
+        this._name = name;
+        
         if (name in IconsParsed) {
             let ws = IconsParsed[name].ws;
             this.styles = {

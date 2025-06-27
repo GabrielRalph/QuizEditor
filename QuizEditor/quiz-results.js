@@ -154,6 +154,7 @@ const answersKeys = {
         title: "Correct",
     },
 }
+
 const actionKeys = {
     "question": {
         title: "Question",
@@ -170,6 +171,7 @@ const actionKeys = {
         title: "Selected<br>answers"
     }
 }
+
 class Table extends SvgPlus {
     constructor(actions, keyType) {
         super("table");

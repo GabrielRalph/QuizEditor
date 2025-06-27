@@ -13,6 +13,36 @@ import { MarkdownElement } from "./markdown.js";
  */
 
 
+/**
+ * @param {Array} choosen
+ * @param {Array} correct
+ * @param {number} total
+ * 
+ * @return {number}
+ * 
+ */
+function computeScore(choosen, correct, total) {
+    let score = 0;
+    if (correct.length > 1) {
+        let t_c = correct.length;
+        let t_ic = total - t_c;
+
+        
+        correct = new Set(correct);
+        let correctChoice = choosen.filter(i => correct.has(i));
+        let c_c = correctChoice.length;
+        let c_ic = choosen.length - c_c;
+
+
+        score = c_c / t_c - (t_ic == 0 ? 0 : (c_ic / t_ic));
+        if (score < 0) score = 0;
+    } else if (correct.length = 0 || correct[0] == choosen[0]) {
+        score = 1;
+    } 
+    return score
+}
+
+
 /** 
  * @param {Quiz} quiz 
  * @param {Array<number>[]} choosen
@@ -25,6 +55,7 @@ function createResults(quiz, choosen, actions) {
         return {
             choosen, question,
             correct: correct[question],
+            score: computeScore(choosen, correct[question], quiz.questions[question].answers.length)
         }
     })
 
@@ -35,9 +66,10 @@ function createResults(quiz, choosen, actions) {
     let results_csv = cor.map((s, i) => `Q${i+1}, ${s}, ${cho[i]}`).join("\n");
     let actions_csv = actions.map((s,i) => `Q${s.question + 1}, ${s.type}, ${Math.round(s.duration / 10)/100}s, ${sel[i]}`).join("\n");
     let csv = `**Quiz Actions**\nquestion,action,response time (s), selected answers\n${actions_csv}\n\n**Quiz Results\nquestion, correct, choosen\n${results_csv}`;
-
-    return {actions, answers, csv};
+    let total = answers.map(a=>a.score).reduce((a,b)=>a+b)
+    return {actions, answers, csv, total};
 }
+
 
 const COLORS = [
     "light-red",

@@ -27,8 +27,7 @@ export function isExactSame(obj1, obj2) {
     } else if ( obj1 !== obj2 ) return false;
   
     return true;
-  }
-
+}
   
 export class ToggleInput extends SvgPlus {
     constructor(){
@@ -50,7 +49,6 @@ export class ToggleInput extends SvgPlus {
         this.input.checked = bool;
     }
 }
-
 
 
 /**
