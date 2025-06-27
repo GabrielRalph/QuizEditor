@@ -198,7 +198,13 @@ function validate(data, validater, key = "Data") {
  * @return {Quiz}
  */
 function validateQuiz(quiz) {
-    return validate(quiz, QUIZ_VALIDATER);
+    let res = null;
+    try {
+        res = validate(quiz, QUIZ_VALIDATER);
+    } catch (e) {
+        throw new QuizError([e.message]);
+    }
+    return res;
 }
 
 async function callUpdates(){
@@ -282,16 +288,12 @@ export async function getSummary(csv) {
  */
 export async function saveQuiz(qid, quiz) {
     let quizID = qid;
-    try {
-        quiz = validateQuiz(quiz);
-        let {data} = await callFunction("quizzes-add", {qid, quiz}, "australia-southeast1")
-        if (data.errors.length > 0) {
-            throw new QuizError(data.errors);
-        }
-        quizID = data.quizID;
-        
-    } catch (e) {
+    quiz = validateQuiz(quiz);
+    let {data} = await callFunction("quizzes-add", {qid, quiz}, "australia-southeast1")
+    if (data.errors.length > 0) {
+        throw new QuizError(data.errors);
     }
+    quizID = data.quizID;
     return quizID;
 }
 
