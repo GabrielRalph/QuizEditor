@@ -474,7 +474,13 @@ export class QuizEditorApp extends SvgPlus {
                     if (typeof qid !== "string") {
                         qid = null;
                     }
-                    qid = await saveQuiz(qid, value);
+                    try {
+                        qid = await saveQuiz(qid, value);
+                    } catch (e) {
+                        const event = new Event("error");
+                        event.error = e;
+                        this.dispatchEvent(event);
+                    }
                     this.disabled = false;
                     
                     let path = this.editor.path;

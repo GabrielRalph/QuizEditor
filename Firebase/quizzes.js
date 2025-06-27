@@ -78,6 +78,14 @@ const COLORS = new Set([
 ])
 
 
+class QuizError extends Error {
+    constructor(errors) {
+        super("Quiz Error");
+        this.errors = errors;
+    }
+}
+
+
 const {isArray} = Array;
 const isString = (s) => typeof s === "string";
 const isValidString = (s, key, max, emptyAllowed = false) => {
@@ -278,7 +286,7 @@ export async function saveQuiz(qid, quiz) {
         quiz = validateQuiz(quiz);
         let {data} = await callFunction("quizzes-add", {qid, quiz}, "australia-southeast1")
         if (data.errors.length > 0) {
-            console.log("An error occured whilst saving quiz.", data.errors);
+            throw new QuizError(data.errors);
         }
         quizID = data.quizID;
         
