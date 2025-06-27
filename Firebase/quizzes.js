@@ -120,7 +120,10 @@ const ANSWER_VALIDATER = {
         return question;
     },
     image: (img) => {
-        if (isString(img) && img.length > 0 && img.length < MAX_MULTI_LENGTH) {
+        if (isString(img) && img.length > 0) {
+            if (img.length > MAX_MULTI_LENGTH) {
+                throw `The image URL is more than ${MAX_MULTI_LENGTH} characters long.\nPlease select a shorter URL.`;
+            }
             return img
         } else {
             return null;
@@ -143,7 +146,10 @@ const QUESTION_VALIDATER = {
         return question;
     },
     image: (img) => {
-        if (isString(img) && img.length > 0 && img.length < MAX_MULTI_LENGTH) {
+        if (isString(img) && img.length > 0) {
+            if (img.length > MAX_MULTI_LENGTH) {
+                throw `The image URL is more than ${MAX_MULTI_LENGTH} characters long.\nPlease select a shorter URL.`;
+            }
             return img
         } else {
             return null;
@@ -202,7 +208,7 @@ function validateQuiz(quiz) {
     try {
         res = validate(quiz, QUIZ_VALIDATER);
     } catch (e) {
-        throw new QuizError([e.message]);
+        throw new QuizError([e+""]);
     }
     return res;
 }
