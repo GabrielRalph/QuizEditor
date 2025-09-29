@@ -1,9 +1,10 @@
 import { SvgPlus } from "../SvgPlus/4.js";
 import { parseText, PopupPromt, WBInputs, WBlock } from "../Utilities/shared.js";
-import { getEmptyAnswer, getEmptyQuestion, saveQuiz, initialise, addQuizUpdateListener, getAllQuizes, getQuiz, getEmptyQuiz, deleteQuiz} from "../Firebase/quizzes.js";
-import { SearchWidget } from "./symbol-search.js";
 import { QuizView } from "./quiz.js";
 import { Icon } from "../Utilities/icons.js";
+import { SearchWidget } from "./symbol-search.js";
+
+import { getEmptyAnswer, getEmptyQuestion, saveQuiz, initialise, addQuizUpdateListener, getAllQuizes, getQuiz, getEmptyQuiz, deleteQuiz} from "../Firebase/quizzes.js";
 
 /**
  * @typedef {import("../Firebase/quizzes.js").Answer} Answer

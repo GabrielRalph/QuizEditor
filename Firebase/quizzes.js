@@ -50,7 +50,7 @@
  * @property {string} summary
  */
 
-import { query, get, set, onChildAdded, onChildChanged, onChildRemoved, callFunction, child, ref, update, initialise as initFB, orderByChild, equalTo, getUID, addAuthChangeListener, signOut, signInWithEmailAndPassword } from "./firebase-client.js"
+import { query, get, set, onChildAdded, onChildChanged, onChildRemoved, callFunction, child, ref, initialise as initFB, orderByChild, equalTo, getUID, addAuthChangeListener } from "https://squidly.com.au/Firebase/firebase-client.js";
 
 
 const MAX_TITLE_LENGTH = 1024;
@@ -407,9 +407,9 @@ export async function initialise(callback) {
 }
 
 
-window.signOut = signOut
-window.signIn = () => {
-    let email = prompt("email");
-    let password = prompt("password");
-    signInWithEmailAndPassword(email, password);
-}
+// window.signOut = signOut
+// window.signIn = () => {
+//     let email = prompt("email");
+//     let password = prompt("password");
+//     signInWithEmailAndPassword(email, password);
+// }

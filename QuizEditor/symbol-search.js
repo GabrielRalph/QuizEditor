@@ -1,6 +1,7 @@
 import { WBlock, ToggleInput } from "../Utilities/shared.js";
 import {SvgPlus} from "../SvgPlus/4.js"
 import {Icon} from "../Utilities/icons.js"
+
 import { searchSymbols, deleteSymbol, uploadSymbol } from "../Firebase/symbols.js";
 
 const MAX_FILE_SIZE = 50 * 1024;
