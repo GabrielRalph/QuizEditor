@@ -129,6 +129,13 @@ const ANSWER_VALIDATER = {
             return null;
         }
     },
+    utterance: (text) => {
+        if (isString(text) && text.length > 0 && text.length < MAX_MULTI_LENGTH) {
+            return text;
+        } else {
+            return null;
+        }
+    },
     color: (color) => {
         if (COLORS.has(color)) {
             return color;
@@ -151,6 +158,13 @@ const QUESTION_VALIDATER = {
                 throw `The image URL is more than ${MAX_MULTI_LENGTH} characters long.\nPlease select a shorter URL.`;
             }
             return img
+        } else {
+            return null;
+        }
+    },
+    utterance: (text) => {
+        if (isString(text) && text.length > 0 && text.length < MAX_MULTI_LENGTH) {
+            return text;
         } else {
             return null;
         }
@@ -208,6 +222,7 @@ function validateQuiz(quiz) {
     try {
         res = validate(quiz, QUIZ_VALIDATER);
     } catch (e) {
+        console.log(e)
         throw new QuizError([e+""]);
     }
     return res;
@@ -295,6 +310,7 @@ export async function getSummary(csv) {
 export async function saveQuiz(qid, quiz) {
     let quizID = qid;
     quiz = validateQuiz(quiz);
+    console.log("validated quiz", quiz);
     let {data} = await callFunction("quizzes-add", {qid, quiz}, "australia-southeast1")
     if (data.errors.length > 0) {
         throw new QuizError(data.errors);

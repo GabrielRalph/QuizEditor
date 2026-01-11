@@ -455,11 +455,12 @@ export class WBInputs extends SvgPlus {
     }
 
     set value(value) {
-        for (let key in value) {
-            if (key in this.inputs) {
-                if (!isExactSame(value[key], this.inputs[key])) {
-                    this.inputs[key].value = value[key]
-                }
+        for (let key in this.inputs) {
+            let val = value[key] || null;
+
+            // Only set if different to avoid unnecessary events
+            if (!isExactSame(val, this.inputs[key].value)) {
+                this.inputs[key].value = val
             }
         }
     }
@@ -474,14 +475,7 @@ export class WBInputs extends SvgPlus {
 }
 
 export function parseText(text) {
-    // try {
-    //     let parser = new DOMParser();
-    //     let doc = parser.parseFromString(text, "text/html");
-    //     text = doc.body.textContent;
-    // } catch (e) {
-    //     return "";
-    // }
-
+    if (typeof text !== "string") return "";
     return text;
 }
 

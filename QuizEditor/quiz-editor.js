@@ -55,6 +55,13 @@ const LAYOUTS = {
             parser: parseText
         },
         {
+            name: "Utterance",
+            rows: 3,
+            type: "multiline",
+            defaultValue: "",
+            parser: parseText
+        },
+        {
             name: "Correct",
             type: "toggle",
             defaultValue: false,
@@ -82,6 +89,13 @@ const LAYOUTS = {
             type: "multiline",
             defaultValue: "",
             rows: 3,
+            parser: parseText
+        },
+        {
+            name: "Utterance",
+            rows: 3,
+            type: "multiline",
+            defaultValue: "",
             parser: parseText
         },
         {
@@ -212,16 +226,13 @@ class QuizesList extends WBlock {
         }
     }
 
-   
-
 
     /** @param {Object<string, Quiz>} quizes*/
     set quizes(quizes){
-       
         this.main.innerHTML = "";
         quizes = Object.values(quizes)
         let r = createChildren(quizes.map((q, i) => [
-            ["div", {class: "row quiz-item", events: {
+            ["div", {class: "row quiz-item", "quiz-id": q.qid, events: {
                 click: () => this.selectQuiz(i)
             }}], [
                 [["div"], [
@@ -472,10 +483,12 @@ export class QuizEditorApp extends SvgPlus {
                     this.disabled = true;
                     let {value} = this.editor;
                     let qid = this.selectedQID;
+
                     if (typeof qid !== "string") {
                         qid = null;
                     }
                     try {
+                        
                         qid = await saveQuiz(qid, value);
                     } catch (e) {
                         const event = new Event("error");
